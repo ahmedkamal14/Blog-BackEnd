@@ -54,22 +54,33 @@ app.use(helmet());
 
 const allowedDomains = [
   "http://localhost:5173", // Dev team domain
-  "https://ahmedkamal14.github.io/PersonalBlog/", // Actual production domain
+  "https://ahmedkamal14.github.io", // Actual production domain
 ];
 
+// Configure CORS
 app.use(
   cors({
     origin: function (origin, callback) {
-      // If the request is from an allowed domain, allow it
       if (allowedDomains.indexOf(origin) !== -1 || !origin) {
         callback(null, true);
       } else {
-        // If the request is not from an allowed domain, reject it
         callback(new Error("Not allowed by CORS"));
       }
     },
+    credentials: true,
+    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    optionsSuccessStatus: 200,
   })
 );
+
+// Ensure OPTIONS requests are handled
+app.options(
+  "*",
+  cors({
+    origin: allowedDomains,
+  })
+);
+
 app.use(xss());
 
 const start = async () => {
