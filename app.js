@@ -8,6 +8,8 @@ const { uploadsRouter } = require("./routes/uploads.js");
 //Testing Html Files
 const path = require("path");
 
+const app = express();
+
 // Authorization MW
 const { protect } = require("./middleware/authorization.js");
 
@@ -59,8 +61,6 @@ app.use(helmet());
 app.use(xss());
 
 dotenv.config();
-
-const app = express();
 
 // Home Page
 app.get("/", (req, res) => {
